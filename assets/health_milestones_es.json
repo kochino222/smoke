@@ -1,0 +1,60 @@
+{
+  "milestones": [
+    {
+      "id": 1,
+      "daysRequired": 1,
+      "title": "¡Primer día!",
+      "description": "Completaste tu primer día sin fumar. ¡Buen comienzo!",
+      "icon": "🎯"
+    },
+    {
+      "id": 2,
+      "daysRequired": 3,
+      "title": "Tres días",
+      "description": "Ya pasó lo más difícil. ¡Vas muy bien!",
+      "icon": "⭐"
+    },
+    {
+      "id": 3,
+      "daysRequired": 7,
+      "title": "Una semana",
+      "description": "¡Una semana sin fumar! Eres un campeón.",
+      "icon": "🏆"
+    },
+    {
+      "id": 4,
+      "daysRequired": 14,
+      "title": "Dos semanas",
+      "description": "Tu cuerpo ya está regenerándose. ¡Sigue así!",
+      "icon": "💪"
+    },
+    {
+      "id": 5,
+      "daysRequired": 30,
+      "title": "Un mes",
+      "description": "¡Un mes entero sin fumar! Eres increíble.",
+      "icon": "🎉"
+    },
+    {
+      "id": 6,
+      "daysRequired": 60,
+      "title": "Dos meses",
+      "description": "Tu pulmón está mejorando significativamente.",
+      "icon": "🫁"
+    },
+    {
+      "id": 7,
+      "daysRequired": 100,
+      "title": "100 días",
+      "description": "¡Cien días! Estás en la zona de seguridad.",
+      "icon": "🚀"
+    },
+    {
+      "id": 8,
+      "daysRequired": 365,
+      "title": "Un año",
+      "description": "¡Un año entero! ¡Eres un verdadero ganador!",
+      "icon": "👑"
+    }
+  ]
+}
