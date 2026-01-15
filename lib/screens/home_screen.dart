@@ -1,10 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../services/storage_service.dart';
 import '../widgets/health_benefits_card.dart';
 import '../widgets/milestones_list_widget.dart';
 import '../widgets/savings_breakdown_card.dart';
+import '../widgets/time_since_smoking_widget.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,9 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final double _defaultPackPrice = 5000;
   final double _defaultPacksPerDay = 1;
 
-  Timer? _timer;
-  DateTime _now = DateTime.now();
-
   // Estado (se carga desde Storage)
   DateTime? lastSmokeAt;
   double packPrice = 5000;
@@ -32,15 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadFromStorage();
-
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() => _now = DateTime.now());
-    });
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
     super.dispose();
   }
 
@@ -73,11 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    final duration = _now.difference(lastSmokeAt!);
-    final daysInt = duration.inDays;
-    final hoursInt = duration.inHours % 24;
-    final minsInt = duration.inMinutes % 60;
-    final days = duration.inMinutes / 1440.0; // 1440 min por día
+    // Calcular días transcurridos (sin actualizar cada segundo)
+    final daysElapsed = DateTime.now().difference(lastSmokeAt!).inDays;
+    final days = DateTime.now().difference(lastSmokeAt!).inMinutes / 1440.0;
     final saved = packPrice * packsPerDay * days;
 
     return Scaffold(
@@ -98,100 +88,68 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: lastSmokeAt == null
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // Tiempo sin fumar
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Tiempo sin fumar',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '$daysInt días, $hoursInt horas, $minsInt min',
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text('Desde: ${_fmt(lastSmokeAt!)}'),
-                        ],
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Tiempo sin fumar (widget independiente con su propio timer)
+            TimeSinceSmokingWidget(lastSmokeAt: lastSmokeAt!),
+            const SizedBox(height: 12),
+
+            // Ahorro estimado total
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Ahorro acumulado',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Ahorro estimado total
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Ahorro acumulado',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _fmtMoney(saved),
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            'Base: ${packPrice.toStringAsFixed(0)} ARS/atado × ${packsPerDay.toStringAsFixed(0)} atado/día',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                        ],
+                    const SizedBox(height: 8),
+                    Text(
+                      _fmtMoney(saved),
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Desglose de ahorros
-                  SavingsBreakdownCard(
-                    packPrice: packPrice,
-                    packsPerDay: packsPerDay,
-                    daysElapsed: daysInt,
-                    lastSmokeAt: lastSmokeAt!,
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Beneficios de salud
-                  HealthBenefitsCard(daysElapsed: daysInt),
-                  const SizedBox(height: 12),
-
-                  // Logros desbloqueados
-                  MilestonesListWidget(daysElapsed: daysInt),
-                  const SizedBox(height: 24),
-                ],
+                    const SizedBox(height: 6),
+                    Text(
+                      'Base: ${packPrice.toStringAsFixed(0)} ARS/atado × ${packsPerDay.toStringAsFixed(0)} atado/día',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
               ),
             ),
-    );
-  }
+            const SizedBox(height: 12),
 
-  static String _fmt(DateTime dt) {
-    return DateFormat('dd/MM/yyyy HH:mm').format(dt);
+            // Desglose de ahorros
+            SavingsBreakdownCard(
+              packPrice: packPrice,
+              packsPerDay: packsPerDay,
+              daysElapsed: daysElapsed,
+              lastSmokeAt: lastSmokeAt!,
+            ),
+            const SizedBox(height: 12),
+
+            // Beneficios de salud
+            HealthBenefitsCard(daysElapsed: daysElapsed),
+            const SizedBox(height: 12),
+
+            // Logros desbloqueados
+            MilestonesListWidget(daysElapsed: daysElapsed),
+            const SizedBox(height: 24),
+          ],
+        ),
+      ),
+    );
   }
 
   static String _fmtMoney(double value) {
