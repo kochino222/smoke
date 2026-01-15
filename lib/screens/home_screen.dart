@@ -6,6 +6,7 @@ import '../widgets/milestones_list_widget.dart';
 import '../widgets/savings_breakdown_card.dart';
 import '../widgets/time_since_smoking_widget.dart';
 import 'settings_screen.dart';
+import 'health_timeline_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,6 +75,20 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Smoke'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.timeline),
+            tooltip: 'Health Timeline',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => HealthTimelineScreen(
+                    daysElapsed: DateTime.now().difference(lastSmokeAt!).inDays,
+                  ),
+                ),
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
