@@ -47,23 +47,34 @@ class _TimeSinceSmokingWidgetState extends State<TimeSinceSmokingWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
+            // Número grande + contexto pequeño
+            Text(
+              '${daysInt} ${daysInt == 1 ? 'día' : 'días'}',
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 4),
+            Text(
               'Tiempo sin fumar',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              ),
+              style: Theme.of(context).textTheme.labelMedium,
             ),
             const SizedBox(height: 8),
+
+            // Línea corta con horas y minutos
             Text(
-              '$daysInt días, $hoursInt horas, $minsInt min',
-              style: const TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
+              '${hoursInt}h ${minsInt}m',
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Colors.grey[700],
+                  ),
             ),
             const SizedBox(height: 6),
-            Text('Desde: ${_fmt(widget.lastSmokeAt)}'),
+
+            // Fecha de referencia
+            Text(
+              'Desde: ${_fmt(widget.lastSmokeAt)}',
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
           ],
         ),
       ),

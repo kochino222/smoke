@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/health_milestone.dart';
 import '../services/health_milestones_service.dart';
 
 class HealthBenefitsCard extends StatelessWidget {
@@ -65,7 +64,7 @@ class HealthBenefitsCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   nextMilestone.getCategoryEmoji(),
@@ -78,23 +77,35 @@ class HealthBenefitsCard extends StatelessWidget {
                     children: [
                       Text(
                         nextMilestone.titleEs,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'En $daysUntilNext días',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
+                        'Próximo',
+                        style: Theme.of(context).textTheme.labelSmall,
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(width: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      '$daysUntilNext',
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      'días',
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ],
                 ),
               ],
             ),

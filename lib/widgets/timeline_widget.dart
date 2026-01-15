@@ -9,11 +9,11 @@ class TimelineWidget extends StatefulWidget {
   final HealthMilestonesService service;
 
   const TimelineWidget({
-    Key? key,
+    super.key,
     required this.minutesElapsed,
     required this.locale,
     required this.service,
-  }) : super(key: key);
+  });
 
   @override
   State<TimelineWidget> createState() => _TimelineWidgetState();
@@ -89,28 +89,44 @@ class _TimelineWidgetState extends State<TimelineWidget>
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
                     children: [
-                      Text(
-                        milestone.getTitle(widget.locale),
-                        style:
-                            Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: isAchieved
-                                      ? Colors.green[700]
-                                      : Colors.black87,
-                                ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              milestone.getTitle(widget.locale),
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: isAchieved ? Colors.green[700] : Colors.black87,
+                                  ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '',
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        HealthMilestone.formatMinutes(milestone.afterMinutes),
-                        style:
-                            Theme.of(context).textTheme.labelSmall?.copyWith(
-                                  color: Colors.grey[600],
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            HealthMilestone.formatMinutes(milestone.afterMinutes),
+                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
                                 ),
+                          ),
+                          Text(
+                            '',
+                            style: Theme.of(context).textTheme.labelSmall,
+                          ),
+                        ],
                       ),
                     ],
                   ),

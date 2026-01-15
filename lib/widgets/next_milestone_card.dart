@@ -9,11 +9,11 @@ class NextMilestoneCard extends StatelessWidget {
   final HealthMilestonesService service;
 
   const NextMilestoneCard({
-    Key? key,
+    super.key,
     required this.minutesElapsed,
     required this.locale,
     required this.service,
-  }) : super(key: key);
+  });
 
   void _showSourceModal(BuildContext context, HealthMilestone milestone) {
     showModalBottomSheet(
@@ -129,7 +129,7 @@ class NextMilestoneCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Barra de progreso
+            // Barra de progreso con jerarquía clara
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -137,15 +137,15 @@ class NextMilestoneCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      locale == 'es' ? 'Progreso' : 'Progress',
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                    Text(
                       '${(progress * 100).toStringAsFixed(0)}%',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
                           ),
+                    ),
+                    Text(
+                      locale == 'es' ? 'Progreso' : 'Progress',
+                      style: Theme.of(context).textTheme.labelSmall,
                     ),
                   ],
                 ),
@@ -165,30 +165,41 @@ class NextMilestoneCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Tiempo restante
+            // Tiempo restante con jerarquía
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 12,
-                vertical: 8,
+                vertical: 10,
               ),
               decoration: BoxDecoration(
                 color: Colors.amber.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        HealthMilestone.formatMinutes(timeRemaining),
+                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                              color: Colors.amber[900],
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      Text(
+                        locale == 'es' ? 'Faltan' : 'Remaining',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                              color: Colors.amber[900],
+                            ),
+                      ),
+                    ],
+                  ),
                   const Icon(
                     Icons.schedule,
-                    size: 16,
+                    size: 28,
                     color: Colors.amber,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    '${locale == 'es' ? 'Faltan' : 'Remaining'}: ${HealthMilestone.formatMinutes(timeRemaining)}',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Colors.amber[900],
-                          fontWeight: FontWeight.w600,
-                        ),
                   ),
                 ],
               ),
