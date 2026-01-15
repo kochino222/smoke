@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../styles.dart';
 
 /// Widget independiente para mostrar el contador de tiempo sin fumar
 /// Tiene su propio Timer para no afectar el scroll de la pantalla principal
@@ -41,42 +42,39 @@ class _TimeSinceSmokingWidgetState extends State<TimeSinceSmokingWidget> {
     final hoursInt = duration.inHours % 24;
     final minsInt = duration.inMinutes % 60;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Número grande + contexto pequeño
-            Text(
-              '${daysInt} ${daysInt == 1 ? 'día' : 'días'}',
-              style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              'Tiempo sin fumar',
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-            const SizedBox(height: 8),
+    return PremiumCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Número grande + contexto pequeño
+          Text(
+            '${daysInt} ${daysInt == 1 ? 'día' : 'días'}',
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Tiempo sin fumar',
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+          const SizedBox(height: 8),
 
-            // Línea corta con horas y minutos
-            Text(
-              '${hoursInt}h ${minsInt}m',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[700],
-                  ),
-            ),
-            const SizedBox(height: 6),
+          // Línea corta con horas y minutos
+          Text(
+            '${hoursInt}h ${minsInt}m',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[700],
+                ),
+          ),
+          const SizedBox(height: 6),
 
-            // Fecha de referencia
-            Text(
-              'Desde: ${_fmt(widget.lastSmokeAt)}',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
-        ),
+          // Fecha de referencia
+          Text(
+            'Desde: ${_fmt(widget.lastSmokeAt)}',
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+        ],
       ),
     );
   }

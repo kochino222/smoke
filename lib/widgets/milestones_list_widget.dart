@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/health_milestone.dart';
 import '../services/health_milestones_service.dart';
+import '../styles.dart';
 
 class MilestonesListWidget extends StatelessWidget {
   final int daysElapsed;
@@ -16,14 +17,10 @@ class MilestonesListWidget extends StatelessWidget {
     final minutesElapsed = daysElapsed * 1440;
     final milestones = milestonesService.getAllMilestones();
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return PremiumCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             const Text(
               'Logros desbloqueados',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
@@ -104,7 +101,6 @@ class MilestonesListWidget extends StatelessWidget {
             ],
           ],
         ),
-      ),
-    );
+      );
   }
 }

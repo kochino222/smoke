@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/health_milestone.dart';
 import '../services/health_milestones_service.dart';
 import 'source_bottom_sheet.dart';
+import '../styles.dart';
 
 class TimelineWidget extends StatefulWidget {
   final int minutesElapsed;
@@ -50,17 +51,10 @@ class _TimelineWidgetState extends State<TimelineWidget>
   }
 
   Widget _buildMilestoneCard(HealthMilestone milestone, bool isAchieved) {
-    return Card(
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: isAchieved ? Colors.green.withOpacity(0.3) : Colors.grey[300]!,
-          width: 1,
-        ),
-      ),
+    return PremiumCard(
+      borderColor: isAchieved ? Colors.green.withValues(alpha: 0.3) : Colors.grey[300]!,
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -73,8 +67,8 @@ class _TimelineWidgetState extends State<TimelineWidget>
                   height: 40,
                   decoration: BoxDecoration(
                     color: isAchieved
-                        ? Colors.green.withOpacity(0.2)
-                        : Colors.grey.withOpacity(0.2),
+                        ? Colors.green.withValues(alpha: 0.2)
+                        : Colors.grey.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -175,7 +169,7 @@ class _TimelineWidgetState extends State<TimelineWidget>
                     horizontal: 12,
                     vertical: 8,
                   ),
-                  backgroundColor: Colors.blue.withOpacity(0.1),
+                  backgroundColor: Colors.blue.withValues(alpha: 0.1),
                   foregroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/health_milestone.dart';
 import '../services/health_milestones_service.dart';
 import 'source_bottom_sheet.dart';
+import '../styles.dart';
 
 class NextMilestoneCard extends StatelessWidget {
   final int minutesElapsed;
@@ -34,40 +35,35 @@ class NextMilestoneCard extends StatelessWidget {
     final nextMilestone = service.getNextMilestone(minutesElapsed);
 
     if (nextMilestone == null) {
-      // Todos los hitos completados
-      return Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              const Text(
-                '🏆',
-                style: TextStyle(fontSize: 48),
-              ),
-              const SizedBox(height: 12),
-              Text(
-                locale == 'es'
-                    ? '¡Todos los hitos alcanzados!'
-                    : 'All milestones achieved!',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                locale == 'es'
-                    ? 'Felicidades por tu progreso en dejar de fumar.'
-                    : 'Congratulations on your progress in quitting smoking.',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey[600],
-                    ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+      // Todos los hitos alcanzados
+      return PremiumCard(
+        child: Column(
+          children: [
+            const Text(
+              '🏆',
+              style: TextStyle(fontSize: 48),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              locale == 'es'
+                  ? '¡Todos los hitos alcanzados!'
+                  : 'All milestones achieved!',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              locale == 'es'
+                  ? 'Felicidades por tu progreso en dejar de fumar.'
+                  : 'Congratulations on your progress in quitting smoking.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       );
     }
@@ -75,14 +71,10 @@ class NextMilestoneCard extends StatelessWidget {
     final progress = service.getProgressToNextMilestone(minutesElapsed);
     final timeRemaining = nextMilestone.afterMinutes - minutesElapsed;
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return PremiumCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             // Encabezado
             Row(
               children: [
@@ -172,7 +164,7 @@ class NextMilestoneCard extends StatelessWidget {
                 vertical: 10,
               ),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.1),
+                color: Colors.amber.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(

@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import '../services/health_timeline_service.dart';
 
+enum MilestoneState {
+  done,
+  next,
+  locked,
+}
+
 /// Widget que muestra la timeline completa de hitos de salud
 class HealthTimelineWidget extends StatefulWidget {
   final int daysElapsed;
@@ -84,7 +90,7 @@ class _HealthTimelineWidgetState extends State<HealthTimelineWidget> {
                         return _MilestoneCard(
                           milestone: milestone,
                           locale: widget.locale,
-                          isAchieved: true,
+                          state: MilestoneState.done,
                         );
                       },
                     );
@@ -121,10 +127,13 @@ class _HealthTimelineWidgetState extends State<HealthTimelineWidget> {
                       itemCount: milestones.length,
                       itemBuilder: (context, index) {
                         final milestone = milestones[index];
+                        final state = index == 0
+                            ? MilestoneState.next
+                            : MilestoneState.locked;
                         return _MilestoneCard(
                           milestone: milestone,
                           locale: widget.locale,
-                          isAchieved: false,
+                          state: state,
                         );
                       },
                     );
@@ -143,12 +152,12 @@ class _HealthTimelineWidgetState extends State<HealthTimelineWidget> {
 class _MilestoneCard extends StatelessWidget {
   final HealthTimelineMilestone milestone;
   final String locale;
-  final bool isAchieved;
+  final MilestoneState state;
 
   const _MilestoneCard({
     required this.milestone,
     required this.locale,
-    required this.isAchieved,
+    required this.state,
   });
 
   String _formatMinutes(int minutes) {
@@ -189,106 +198,113 @@ class _MilestoneCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color stateColor;
+    final IconData stateIcon;
+
+    switch (state) {
+      case MilestoneState.done:
+        stateColor = const Color(0xFFC8E6C9); // Verde suave
+        stateIcon = Icons.check_circle;
+        break;
+      case MilestoneState.next:
+        stateColor = Theme.of(context).colorScheme.primary; // Acento (teal)
+        stateIcon = Icons.hourglass_bottom;
+        break;
+      default:
+        stateColor = Colors.grey; // Gris
+        stateIcon = Icons.lock;
+    }
+
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Opacity(
-          opacity: isAchieved ? 1.0 : 0.7,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Header con tiempo y estatus
-              Row(
-                children: [
-                  Text(
-                    _getCategoryEmoji(milestone.category),
-                    style: const TextStyle(fontSize: 24),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          milestone.getTitle(locale),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: isAchieved
-                                ? Colors.black87
-                                : Colors.grey[600],
-                          ),
-                        ),
-                        Text(
-                          _formatMinutes(milestone.afterMinutes),
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (isAchieved)
-                    const Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                      size: 24,
-                    )
-                  else
-                    Icon(
-                      Icons.lock,
-                      color: Colors.grey[400],
-                      size: 24,
-                    ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              // Descripción
-              Text(
-                milestone.getDescription(locale),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[700],
-                  height: 1.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header con tiempo y estatus
+            Row(
+              children: [
+                Text(
+                  _getCategoryEmoji(milestone.category),
+                  style: const TextStyle(fontSize: 24),
                 ),
-              ),
-              const SizedBox(height: 12),
-              // Fuente
-              Row(
-                children: [
-                  Icon(
-                    Icons.info_outline,
-                    size: 16,
-                    color: Colors.grey[500],
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        // Aquí se podría abrir el URL en un navegador
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(milestone.sourceUrl),
-                            duration: const Duration(seconds: 3),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        milestone.sourceName,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        milestone.getTitle(locale),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: state == MilestoneState.locked
+                              ? Colors.grey[600]
+                              : Colors.black87,
+                        ),
+                      ),
+                      Text(
+                        _formatMinutes(milestone.afterMinutes),
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.blue[600],
-                          decoration: TextDecoration.underline,
+                          color: Colors.grey[600],
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+                Icon(
+                  stateIcon,
+                  color: stateColor,
+                  size: 24,
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            // Descripción
+            Text(
+              milestone.getDescription(locale),
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[700],
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Fuente
+            Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  size: 16,
+                  color: Colors.grey[500],
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      // Aquí se podría abrir el URL en un navegador
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(milestone.sourceUrl),
+                          duration: const Duration(seconds: 3),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      milestone.sourceName,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue[600],
+                        decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

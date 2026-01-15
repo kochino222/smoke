@@ -7,10 +7,10 @@ class SourceBottomSheet extends StatelessWidget {
   final String locale;
 
   const SourceBottomSheet({
-    Key? key,
+    super.key,
     required this.milestone,
     required this.locale,
-  }) : super(key: key);
+  });
 
   Future<void> _launchURL(BuildContext context) async {
     final Uri uri = Uri.parse(milestone.sourceUrl);
@@ -103,10 +103,10 @@ class SourceBottomSheet extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
+                  color: Colors.blue.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: Colors.blue.withOpacity(0.3),
+                    color: Colors.blue.withValues(alpha: 0.3),
                     width: 1,
                   ),
                 ),

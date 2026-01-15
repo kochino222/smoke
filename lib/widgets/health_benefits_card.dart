@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/health_milestones_service.dart';
+import '../styles.dart';
 
 class HealthBenefitsCard extends StatelessWidget {
   final int daysElapsed;
@@ -16,33 +17,28 @@ class HealthBenefitsCard extends StatelessWidget {
     final nextMilestone = milestonesService.getNextMilestone(minutesElapsed);
 
     if (nextMilestone == null) {
-      return Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Beneficios de salud',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      return PremiumCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Beneficios de salud',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              '🎊 ¡Completaste todos los hitos!',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Has alcanzado el máximo. ¡Eres un verdadero campeón!',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.grey[600],
               ),
-              const SizedBox(height: 12),
-              const Text(
-                '🎊 ¡Completaste todos los hitos!',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Has alcanzado el máximo. ¡Eres un verdadero campeón!',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       );
     }
@@ -50,14 +46,10 @@ class HealthBenefitsCard extends StatelessWidget {
     final daysUntilNext = (nextMilestone.afterMinutes - minutesElapsed) ~/ 1440;
     final progress = milestonesService.getProgressToNextMilestone(minutesElapsed);
 
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+    return PremiumCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
             const Text(
               'Próximo beneficio',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
