@@ -75,169 +75,168 @@ class NextMilestoneCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-            // Encabezado
-            Row(
-              children: [
-                Text(
-                  nextMilestone.getCategoryEmoji(),
-                  style: const TextStyle(fontSize: 32),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        locale == 'es' ? 'Próximo hito' : 'Next milestone',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: Colors.grey[600],
-                            ),
-                      ),
-                      Text(
-                        nextMilestone.getTitle(locale),
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Descripción
-            Text(
-              nextMilestone.getDescription(locale),
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Colors.grey[700],
-                    height: 1.4,
-                  ),
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 16),
-
-            // Barra de progreso con jerarquía clara
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Encabezado
+          Row(
+            children: [
+              Text(
+                nextMilestone.getCategoryEmoji(),
+                style: const TextStyle(fontSize: 32),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '${(progress * 100).toStringAsFixed(0)}%',
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
+                      locale == 'es' ? 'Próximo hito' : 'Next milestone',
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: Colors.grey[600],
                           ),
                     ),
                     Text(
-                      locale == 'es' ? 'Progreso' : 'Progress',
-                      style: Theme.of(context).textTheme.labelSmall,
+                      nextMilestone.getTitle(locale),
+                      style:
+                          Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(
-                    value: progress,
-                    minHeight: 6,
-                    backgroundColor: Colors.grey[200],
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Colors.blue.shade400,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
 
-            // Tiempo restante con jerarquía
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 10,
-              ),
-              decoration: BoxDecoration(
-                color: Colors.amber.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
+          // Descripción
+          Text(
+            nextMilestone.getDescription(locale),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[700],
+                  height: 1.4,
+                ),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 16),
+
+          // Barra de progreso con jerarquía clara
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        HealthMilestone.formatMinutes(timeRemaining),
-                        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: Colors.amber[900],
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      Text(
-                        locale == 'es' ? 'Faltan' : 'Remaining',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                              color: Colors.amber[900],
-                            ),
-                      ),
-                    ],
+                  Text(
+                    '${(progress * 100).toStringAsFixed(0)}%',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
                   ),
-                  const Icon(
-                    Icons.schedule,
-                    size: 28,
-                    color: Colors.amber,
+                  Text(
+                    locale == 'es' ? 'Progreso' : 'Progress',
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 12),
-
-            // Botones de acción
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () =>
-                        _showSourceModal(context, nextMilestone),
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      locale == 'es'
-                          ? 'Fuente'
-                          : 'Source',
-                    ),
+              const SizedBox(height: 6),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: 6,
+                  backgroundColor: Colors.grey[200],
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Colors.blue.shade400,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () =>
-                        _showSourceModal(context, nextMilestone),
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Tiempo restante con jerarquía
+          Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 10,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.amber.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      HealthMilestone.formatMinutes(timeRemaining),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Colors.amber[900],
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-                    child: Text(
-                      locale == 'es'
-                          ? 'Detalles'
-                          : 'Details',
+                    Text(
+                      locale == 'es' ? 'Faltan' : 'Remaining',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Colors.amber[900],
+                          ),
                     ),
-                  ),
+                  ],
+                ),
+                const Icon(
+                  Icons.schedule,
+                  size: 28,
+                  color: Colors.amber,
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 12),
+
+          // Botones de acción
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () =>
+                      _showSourceModal(context, nextMilestone),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    locale == 'es'
+                        ? 'Fuente'
+                        : 'Source',
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () =>
+                      _showSourceModal(context, nextMilestone),
+                  style: OutlinedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    locale == 'es'
+                        ? 'Detalles'
+                        : 'Details',
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
