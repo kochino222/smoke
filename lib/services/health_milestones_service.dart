@@ -2,67 +2,124 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../models/health_milestone.dart';
 
-/// Servicio para cargar y gestionar los hitos de salud
+/// Servicio para cargar y gestionar los hitos de salud bilingual
 class HealthMilestonesService {
-  static const _assetsPath = 'assets/health_milestones_es.json';
-  static List<HealthMilestone>? _cachedMilestones;
+  static final HealthMilestonesService _instance =
+      HealthMilestonesService._internal();
+  late List<HealthMilestone> _milestones = [];
+  bool _isInitialized = false;
 
-  /// Carga todos los hitos desde el archivo JSON
-  static Future<List<HealthMilestone>> loadMilestones() async {
-    if (_cachedMilestones != null) {
-      return _cachedMilestones!;
-    }
+  factory HealthMilestonesService() {
+    return _instance;
+  }
+
+  HealthMilestonesService._internal();
+
+  /// Carga los hitos desde el archivo JSON
+  Future<void> loadMilestones() async {
+    if (_isInitialized) return;
 
     try {
-      final jsonString = await rootBundle.loadString(_assetsPath);
-      final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
-      final milestonesList = jsonData['milestones'] as List<dynamic>;
+      final jsonString = await rootBundle.loadString(
+        'assets/health_milestones.json',
+      );
+      final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+      final milestonesList = jsonData['milestones'] as List<dynamic>? ?? [];
 
-      _cachedMilestones = milestonesList
-          .map((m) => HealthMilestone.fromJson(m as Map<String, dynamic>))
+      _milestones = milestonesList
+          .map((e) => HealthMilestone.fromJson(e as Map<String, dynamic>))
           .toList();
 
-      // Ordenar por días requeridos
-      _cachedMilestones!.sort((a, b) => a.daysRequired.compareTo(b.daysRequired));
+      // Ordenar por tiempo
+      _milestones.sort((a, b) => a.afterMinutes.compareTo(b.afterMinutes));
 
-      return _cachedMilestones!;
+      _isInitialized = true;
     } catch (e) {
-      throw Exception('Error cargando hitos de salud: $e');
+      print('Error loading milestones: $e');
+      _milestones = [];
+      _isInitialized = true;
     }
   }
 
-  /// Obtiene los hitos alcanzados basado en los días transcurridos
-  static Future<List<HealthMilestone>> getAchievedMilestones(int days) async {
-    final allMilestones = await loadMilestones();
-    return allMilestones.where((m) => m.daysRequired <= days).toList();
+  /// Obtiene todos los hitos cargados
+  List<HealthMilestone> getAllMilestones() {
+    return List.unmodifiable(_milestones);
   }
 
-  /// Obtiene el próximo hito a alcanzar
-  static Future<HealthMilestone?> getNextMilestone(int days) async {
-    final allMilestones = await loadMilestones();
+  /// Obtiene hitos ya alcanzados
+  List<HealthMilestone> getAchievedMilestones(int minutesElapsed) {
+    return _milestones
+        .where((m) => m.afterMinutes <= minutesElapsed)
+        .toList();
+  }
+
+  /// Obtiene hitos futuros
+  List<HealthMilestone> getUpcomingMilestones(int minutesElapsed) {
+    return _milestones
+        .where((m) => m.afterMinutes > minutesElapsed)
+        .toList();
+  }
+
+  /// Obtiene el próximo hito
+  HealthMilestone? getNextMilestone(int minutesElapsed) {
+    final upcoming = getUpcomingMilestones(minutesElapsed);
+    return upcoming.isNotEmpty ? upcoming.first : null;
+  }
+
+  /// Obtiene el progreso hacia el próximo hito (0.0 - 1.0)
+  double getProgressToNextMilestone(int minutesElapsed) {
+    final next = getNextMilestone(minutesElapsed);
+    if (next == null) return 1.0;
+
+    final previous = _milestones
+        .where((m) => m.afterMinutes < next.afterMinutes)
+        .lastOrNull
+        ?.afterMinutes;
+
+    final prevTime = previous ?? 0;
+    final nextTime = next.afterMinutes;
+    final elapsed = minutesElapsed - prevTime;
+    final total = nextTime - prevTime;
+
+    if (total <= 0) return 0.0;
+    return (elapsed / total).clamp(0.0, 1.0);
+  }
+
+  /// Obtiene hitos por categoría
+  List<HealthMilestone> getMilestonesByCategory(String category) {
+    return _milestones.where((m) => m.category == category).toList();
+  }
+
+  /// Obtiene categorías únicas
+  Set<String> getCategories() {
+    return _milestones.map((m) => m.category).toSet();
+  }
+
+  /// Obtiene conteo de hitos por categoría
+  Map<String, int> getCategoryCount() {
+    final counts = <String, int>{};
+    for (final milestone in _milestones) {
+      counts[milestone.category] =
+          (counts[milestone.category] ?? 0) + 1;
+    }
+    return counts;
+  }
+
+  /// Busca un hito por ID
+  HealthMilestone? getMilestoneById(String id) {
     try {
-      return allMilestones.firstWhere((m) => m.daysRequired > days);
+      return _milestones.firstWhere((m) => m.id == id);
     } catch (e) {
-      return null; // Todos los hitos han sido alcanzados
+      return null;
     }
   }
 
-  /// Obtiene el progreso hacia el próximo hito (0.0 a 1.0)
-  static Future<double> getProgressToNextMilestone(int days) async {
-    final nextMilestone = await getNextMilestone(days);
-    if (nextMilestone == null) return 1.0;
+  /// Formatea tiempo hasta próximo hito
+  String getTimeUntilNext(int minutesElapsed) {
+    final next = getNextMilestone(minutesElapsed);
+    if (next == null) return 'Completado';
 
-    final previousMilestones = await loadMilestones();
-    final nextIndex = previousMilestones.indexOf(nextMilestone);
-    
-    int previousDays = 0;
-    if (nextIndex > 0) {
-      previousDays = previousMilestones[nextIndex - 1].daysRequired;
-    }
-
-    final daysInRange = nextMilestone.daysRequired - previousDays;
-    final daysPassed = days - previousDays;
-
-    return daysPassed / daysInRange;
+    final remaining = next.afterMinutes - minutesElapsed;
+    return HealthMilestone.formatMinutes(remaining);
   }
 }

@@ -1,0 +1,246 @@
+{
+  "milestones": [
+    {
+      "id": "minutes_020",
+      "afterMinutes": 20,
+      "category": "cardio",
+      "title_es": "Ritmo cardíaco se normaliza",
+      "title_en": "Heart rate normalizes",
+      "description_es": "Tu ritmo cardíaco y presión arterial comienzan a disminuir después de solo 20 minutos sin fumar.",
+      "description_en": "Your heart rate and blood pressure begin to drop after just 20 minutes without smoking.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/benefits-by-the-numbers/index.htm"
+    },
+    {
+      "id": "hours_008",
+      "afterMinutes": 480,
+      "category": "cardio",
+      "title_es": "Monóxido de carbono se normaliza",
+      "title_en": "Carbon monoxide normalizes",
+      "description_es": "El nivel de monóxido de carbono en tu sangre vuelve a la normalidad. El oxígeno llega mejor a tus órganos.",
+      "description_en": "Carbon monoxide levels in your blood return to normal. Oxygen reaches your organs more efficiently.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/benefits-by-the-numbers/index.htm"
+    },
+    {
+      "id": "hours_012",
+      "afterMinutes": 720,
+      "category": "cardio",
+      "title_es": "Riesgo de infarto disminuye",
+      "title_en": "Heart attack risk decreases",
+      "description_es": "Solo 12 horas después de dejar de fumar, el riesgo de sufrir un infarto cardíaco comienza a disminuir.",
+      "description_en": "Just 12 hours after quitting, your risk of heart attack begins to decrease.",
+      "source_name": "NHS",
+      "source_url": "https://www.nhs.uk/smokefree/help-to-quit/stop-smoking-benefits"
+    },
+    {
+      "id": "days_001",
+      "afterMinutes": 1440,
+      "category": "sentidos",
+      "title_es": "Olfato y gusto mejoran",
+      "title_en": "Smell and taste improve",
+      "description_es": "Tus papilas gustativas y sentido del olfato comienzan a recuperarse después de 24 horas.",
+      "description_en": "Your taste buds and sense of smell begin to recover after 24 hours.",
+      "source_name": "NHS",
+      "source_url": "https://www.nhs.uk/smokefree/help-to-quit/stop-smoking-benefits"
+    },
+    {
+      "id": "days_002",
+      "afterMinutes": 2880,
+      "category": "pulmon",
+      "title_es": "Función respiratoria mejora",
+      "title_en": "Breathing becomes easier",
+      "description_es": "A las 48 horas, tus terminaciones nerviosas se recuperan y respirar se vuelve más fácil.",
+      "description_en": "After 48 hours, your nerve endings begin to recover and breathing becomes easier.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/benefits-by-the-numbers/index.htm"
+    },
+    {
+      "id": "days_003",
+      "afterMinutes": 4320,
+      "category": "pulmon",
+      "title_es": "Capacidad pulmonar aumenta",
+      "title_en": "Lung capacity increases",
+      "description_es": "A los 3 días, la capacidad pulmonar puede aumentar hasta un 30%. El oxígeno circula mejor.",
+      "description_en": "After 3 days, lung capacity can increase by up to 30%. Oxygen circulates better.",
+      "source_name": "NHS",
+      "source_url": "https://www.nhs.uk/smokefree/help-to-quit/stop-smoking-benefits"
+    },
+    {
+      "id": "days_007",
+      "afterMinutes": 10080,
+      "category": "pulmon",
+      "title_es": "Función pulmonar se normaliza",
+      "title_en": "Lung function normalizes",
+      "description_es": "A la semana, tus pulmones son 30% más funcionales. Tos y flema disminuyen significativamente.",
+      "description_en": "At one week, your lungs are 30% more functional. Coughing decreases significantly.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/benefits-by-the-numbers/index.htm"
+    },
+    {
+      "id": "days_014",
+      "afterMinutes": 20160,
+      "category": "cardio",
+      "title_es": "Circulación mejora significativamente",
+      "title_en": "Circulation improves significantly",
+      "description_es": "A dos semanas, la circulación sanguínea es mucho mejor. El riesgo cardiovascular disminuye notablemente.",
+      "description_en": "After two weeks, blood circulation is much better. Cardiovascular risk decreases noticeably.",
+      "source_name": "American Heart Association",
+      "source_url": "https://www.heart.org/en/healthy-living/healthy-lifestyle/quit-smoking"
+    },
+    {
+      "id": "days_021",
+      "afterMinutes": 30240,
+      "category": "energia",
+      "title_es": "Sistema inmunológico se fortalece",
+      "title_en": "Immune system strengthens",
+      "description_es": "A los 3 semanas, tu sistema inmunológico ya es más fuerte. Tendrás menos resfriados.",
+      "description_en": "After 3 weeks, your immune system is already stronger. You'll have fewer colds.",
+      "source_name": "NHS",
+      "source_url": "https://www.nhs.uk/smokefree/help-to-quit/stop-smoking-benefits"
+    },
+    {
+      "id": "days_030",
+      "afterMinutes": 43200,
+      "category": "general",
+      "title_es": "Un mes: mejora notoria",
+      "title_en": "One month: noticeable improvement",
+      "description_es": "Al mes, tu función pulmonar y circulatoria mejoran significativamente. No te cansas tan fácilmente.",
+      "description_en": "After one month, your lung and circulatory function improve significantly.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/benefits-by-the-numbers/index.htm"
+    },
+    {
+      "id": "days_090",
+      "afterMinutes": 129600,
+      "category": "cardio",
+      "title_es": "Riesgo de infarto disminuye 50%",
+      "title_en": "Heart attack risk drops 50%",
+      "description_es": "A los 3 meses, el riesgo de infarto cardíaco ya ha disminuido en un 50%. Tu corazón se recupera rápidamente.",
+      "description_en": "After 3 months, heart attack risk has dropped by 50%. Your heart recovers quickly.",
+      "source_name": "American Heart Association",
+      "source_url": "https://www.heart.org/en/healthy-living/healthy-lifestyle/quit-smoking"
+    },
+    {
+      "id": "months_006",
+      "afterMinutes": 259200,
+      "category": "general",
+      "title_es": "Piel y apariencia rejuvenecen",
+      "title_en": "Skin rejuvenates",
+      "description_es": "A los 6 meses, la piel recibe mejor oxígeno y se ve más joven. Cicatrización de heridas es más rápida.",
+      "description_en": "After 6 months, skin receives better oxygen and looks younger. Wound healing is faster.",
+      "source_name": "NHS",
+      "source_url": "https://www.nhs.uk/smokefree/help-to-quit/stop-smoking-benefits"
+    },
+    {
+      "id": "months_009",
+      "afterMinutes": 388800,
+      "category": "pulmon",
+      "title_es": "Función pulmonar casi normalizada",
+      "title_en": "Lung function nearly normalized",
+      "description_es": "A los 9 meses, la función pulmonar está casi al nivel de un no fumador. La tos ha desaparecido casi completamente.",
+      "description_en": "After 9 months, lung function is nearly at non-smoker levels. Coughing has almost completely disappeared.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/benefits-by-the-numbers/index.htm"
+    },
+    {
+      "id": "year_001",
+      "afterMinutes": 525600,
+      "category": "cardio",
+      "title_es": "Un año: Riesgo cardíaco 50% menor",
+      "title_en": "One year: 50% risk reduction",
+      "description_es": "Al completar un año sin fumar, el riesgo de enfermedad cardíaca se ha reducido a la mitad.",
+      "description_en": "After one year, your risk of heart disease is cut in half.",
+      "source_name": "American Heart Association",
+      "source_url": "https://www.heart.org/en/healthy-living/healthy-lifestyle/quit-smoking"
+    },
+    {
+      "id": "year_001_oral",
+      "afterMinutes": 525600,
+      "category": "cancer",
+      "title_es": "Riesgo de cáncer oral disminuye",
+      "title_en": "Oral cancer risk decreases",
+      "description_es": "A un año, el riesgo de cáncer de boca y garganta comienza a disminuir significativamente.",
+      "description_en": "At one year, the risk of mouth and throat cancer begins to decrease significantly.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/index.htm"
+    },
+    {
+      "id": "year_010",
+      "afterMinutes": 5256000,
+      "category": "cancer",
+      "title_es": "Cáncer de pulmón: riesgo 50%",
+      "title_en": "Lung cancer risk drops 50%",
+      "description_es": "A los 10 años, el riesgo de cáncer de pulmón se ha reducido a la mitad comparado con un fumador activo.",
+      "description_en": "After 10 years, lung cancer risk has been cut in half compared to an active smoker.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/index.htm"
+    },
+    {
+      "id": "year_015",
+      "afterMinutes": 7884000,
+      "category": "cardio",
+      "title_es": "Riesgo cardíaco equivalente",
+      "title_en": "Coronary heart disease risk equivalent",
+      "description_es": "A los 15 años, el riesgo de enfermedad coronaria es equivalente al de alguien que nunca fumó.",
+      "description_en": "After 15 years, your risk of coronary heart disease is equivalent to someone who never smoked.",
+      "source_name": "American Heart Association",
+      "source_url": "https://www.heart.org/en/healthy-living/healthy-lifestyle/quit-smoking"
+    },
+    {
+      "id": "continuous_aging",
+      "afterMinutes": 0,
+      "category": "general",
+      "title_es": "Detienes el envejecimiento acelerado",
+      "title_en": "Stop premature aging",
+      "description_es": "Desde el primer momento, dejas de acelerar tu envejecimiento. Tu piel, órganos y células envejecen normalmente.",
+      "description_en": "From the moment you quit, you stop accelerating aging. Your body ages at a normal rate.",
+      "source_name": "WHO",
+      "source_url": "https://www.who.int/news-room/fact-sheets/detail/tobacco"
+    },
+    {
+      "id": "continuous_secondhand",
+      "afterMinutes": 0,
+      "category": "ambiente",
+      "title_es": "Proteges a tu alrededor",
+      "title_en": "Protect those around you",
+      "description_es": "Al dejar de fumar, proteges a tu familia, amigos y colegas del humo de segunda mano.",
+      "description_en": "By quitting, you protect your family, friends, and colleagues from secondhand smoke.",
+      "source_name": "WHO",
+      "source_url": "https://www.who.int/teams/noncommunicable-diseases/tobacco-control"
+    },
+    {
+      "id": "continuous_environment",
+      "afterMinutes": 0,
+      "category": "ambiente",
+      "title_es": "Contribuyes al medio ambiente",
+      "title_en": "Help the environment",
+      "description_es": "Dejas de contribuir a la contaminación del aire. Tu huella ambiental se reduce significativamente.",
+      "description_en": "You stop contributing to air pollution. Your environmental footprint is significantly reduced.",
+      "source_name": "PAHO",
+      "source_url": "https://www.paho.org/en/topics/tobacco"
+    },
+    {
+      "id": "continuous_mental",
+      "afterMinutes": 0,
+      "category": "energia",
+      "title_es": "Salud mental mejora a largo plazo",
+      "title_en": "Mental health improves long-term",
+      "description_es": "Aunque inicialmente hay irritabilidad, dejar de fumar reduce ansiedad y depresión significativamente.",
+      "description_en": "Although initial irritability occurs, quitting significantly reduces anxiety and depression long-term.",
+      "source_name": "NHS",
+      "source_url": "https://www.nhs.uk/smokefree/help-to-quit/stop-smoking-benefits"
+    },
+    {
+      "id": "continuous_financial",
+      "afterMinutes": 0,
+      "category": "general",
+      "title_es": "Ahorros financieros acumulan",
+      "title_en": "Financial savings accumulate",
+      "description_es": "Cada día ahorras dinero que gastabas en cigarrillos. Tras un año, los ahorros son muy significativos.",
+      "description_en": "Every day you save money spent on cigarettes. After one year, savings are substantial.",
+      "source_name": "CDC",
+      "source_url": "https://www.cdc.gov/tobacco/quit_smoking/how_to_quit/index.htm"
+    }
+  ]
+}

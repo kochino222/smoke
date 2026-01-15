@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.2.2
   intl: ^0.19.0
+  url_launcher: ^6.2.0
 
 dev_dependencies:
   flutter_test:
@@ -20,5 +21,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
+    - assets/health_milestones.json
     - assets/health_milestones_es.json
     - assets/health_timeline_es_en.json
