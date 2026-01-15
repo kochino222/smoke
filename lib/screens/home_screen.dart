@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../services/storage_service.dart';
 import 'settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,20 +17,18 @@ class _HomeScreenState extends State<HomeScreen> {
   final double _defaultPackPrice = 5000;
   final double _defaultPacksPerDay = 1;
 
-  late DateTime lastSmokeAt;
-  late double packPrice;
-  late double packsPerDay;
-
   Timer? _timer;
   DateTime _now = DateTime.now();
+
+  // Estado (se carga desde Storage)
+  DateTime? lastSmokeAt;
+  double packPrice = 5000;
+  double packsPerDay = 1;
 
   @override
   void initState() {
     super.initState();
-
-    lastSmokeAt = _defaultLastSmokeAt;
-    packPrice = _defaultPackPrice;
-    packsPerDay = _defaultPacksPerDay;
+    _loadFromStorage();
 
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       setState(() => _now = DateTime.now());
@@ -41,16 +41,43 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  Future<void> _loadFromStorage() async {
+    final storedLast = await StorageService.loadLastSmoke();
+    final storedPrice = await StorageService.loadPackPrice();
+    final storedPacks = await StorageService.loadPacksPerDay();
+
+    final last = storedLast ?? _defaultLastSmokeAt;
+    final price = storedPrice ?? _defaultPackPrice;
+    final packs = storedPacks ?? _defaultPacksPerDay;
+
+    setState(() {
+      lastSmokeAt = last;
+      packPrice = price;
+      packsPerDay = packs;
+    });
+
+    // Guardar defaults si era primera vez
+    if (storedLast == null) await StorageService.saveLastSmoke(last);
+    if (storedPrice == null) await StorageService.savePackPrice(price);
+    if (storedPacks == null) await StorageService.savePacksPerDay(packs);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final duration = _now.difference(lastSmokeAt);
+    if (lastSmokeAt == null) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
 
-    final days = duration.inDays;
-    final hours = duration.inHours % 24;
-    final minutes = duration.inMinutes % 60;
+    final duration = _now.difference(lastSmokeAt!);
 
-    final saved =
-        packPrice * packsPerDay * (duration.inMinutes / 1440.0);
+    final daysInt = duration.inDays;
+    final hoursInt = duration.inHours % 24;
+    final minsInt = duration.inMinutes % 60;
+
+    final days = duration.inMinutes / 1440.0; // 1440 min por día
+    final saved = packPrice * packsPerDay * days;
 
     return Scaffold(
       appBar: AppBar(
@@ -59,10 +86,13 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () async {
-              await Navigator.push(
+              final changed = await Navigator.push<bool>(
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsScreen()),
               );
+              if (changed == true) {
+                await _loadFromStorage();
+              }
             },
           ),
         ],
@@ -80,17 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const Text(
                       'Tiempo sin fumar',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '$days días, $hours h, $minutes min',
-                      style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold),
+                      '$daysInt días, $hoursInt horas, $minsInt min',
+                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 6),
-                    Text('Desde: ${_fmt(lastSmokeAt)}'),
+                    Text('Desde: ${_fmt(lastSmokeAt!)}'),
                   ],
                 ),
               ),
@@ -104,18 +132,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     const Text(
                       'Ahorro estimado',
-                      style:
-                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       _fmtMoney(saved),
-                      style: const TextStyle(
-                          fontSize: 28, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                        'Base: ${packPrice.toStringAsFixed(0)} ARS por día'),
+                      'Base: ${packPrice.toStringAsFixed(0)} ARS/atado × ${packsPerDay.toStringAsFixed(0)} atado/día',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ],
                 ),
               ),
@@ -127,15 +155,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   static String _fmt(DateTime dt) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(dt.day)}/${two(dt.month)}/${dt.year} ${two(dt.hour)}:${two(dt.minute)}';
+    return DateFormat('dd/MM/yyyy HH:mm').format(dt);
   }
 
   static String _fmtMoney(double value) {
-    final rounded = value.round();
-    final s = rounded.toString();
-    final formatted =
-        s.replaceAllMapped(RegExp(r'\B(?=(\d{3})+(?!\d))'), (_) => '.');
-    return '\$$formatted ARS';
+    final formatter = NumberFormat('#,##0', 'es_AR');
+    return '\$${formatter.format(value.round())} ARS';
   }
 }
